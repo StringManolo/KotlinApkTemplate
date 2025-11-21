@@ -95,7 +95,8 @@ This structure includes all files necessary for compilation and all recommended 
 ├── .github/workflows/android.yml  # Configures GitHub Actions for CI/CD
 ├── app/
 │   ├── src/main/
-│   │   ├── java/                  # Your Kotlin code lives here (e.g., com/example/helloworld/MainActivity.kt)
+│   │   ├── java/                  # Your Kotlin code lives here
+│   │   │   └── com/example/helloworld/MainActivity.kt # The main activity written in Kotlin.
 │   │   ├── res/                   # Application resources (layouts, strings, icons, styles)
 │   │   │   ├── layout/
 │   │   │   │   └── activity_main.xml       # Main screen layout
