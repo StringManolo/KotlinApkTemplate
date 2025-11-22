@@ -5,7 +5,7 @@
 echo "🐾 Pushing to GitHub"
 
 if [ -z "$1" ]; then
-    echo "Usage: ./compileApk.sh 'Short description of app changes'"
+    echo "Usage: ./utils-compile-apk 'Short description of app changes'"
     exit 1
 fi
 
