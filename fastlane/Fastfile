@@ -3,17 +3,18 @@ default_platform(:android)
 platform :android do
 
   lane :test do
-    gradle(task: "test")
+    gradle(task: "test", use_gradlew: false)
   end
 
   lane :deploy_debug do
-    gradle(task: "assembleDebug")
+    gradle(task: "assembleDebug", use_gradlew: false)
   end
 
   lane :deploy_release do |options|
     
     gradle(
       task: "assembleRelease",
+      use_gradlew: false, # <-- FIX: Use global Gradle binary
       properties: {
         "android.injected.signing.store.file" => "app/release-key.jks",
         "android.injected.signing.store.password" => ENV['STORE_PASSWORD'],
