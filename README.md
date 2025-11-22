@@ -1,138 +1,79 @@
-# Kotlin APK Template 🚀
+# Hello World: Minimal Kotlin APK Template
 
-A complete, ready-to-use template for building Android apps in Kotlin. This project automates the boring stuff: compiling, signing, and releasing your APKs using GitHub Actions and Fastlane.
+**Compile Android APKs in 2 minutes - ZERO installation required!**
 
-## 🌟 Features
+> **Just click "Use this template" and start coding - no Android Studio, no SDK, no JDK needed!**
 
-- **Kotlin First**: Modern Android development setup
-- **Zero Config Debug Builds**: Just push code, get an APK
-- **Automated Releases**: Tag a version, get a signed APK ready for the store
-- **Store Ready Structure**: Pre-configured file structure for all mandatory Google Play/F-Droid assets and metadata
+## 🚀 How It Works
 
-## 🏁 Step-by-Step Guide for Beginners
+This template uses **GitHub Actions** to compile your APK automatically. You only need a GitHub account - no development tools required!
 
-Follow these steps to build your first Android App using this template.
+### 3-Step Process:
+1. **Click "Use this template"** → Create your repository
+2. **Edit code directly on GitHub**
+3. **Download APK from Actions tab**
 
-### Step 1: Create Your Repository
+Your APK compiles automatically on every code change!
 
-1. Click the green "Use this template" button at the top of this page
-2. Choose "Create a new repository"
-3. Give it a name (e.g., `my-awesome-app`) and create it
+## 🎯 Get Started Now
 
-### Step 2: Customize the Package Name
+### Step 1: Create Your Project
+- Click the **"Use this template"** button above
+- Name your new repository
+- Create it (public or private)
 
-By default, the app is named `com.example.helloworld`. You must change this to your own unique ID (e.g., `com.yourname.coolapp`).
+### Step 2: Customize Your App
+Edit these files directly on GitHub:
 
-1. Clone your new repo to your computer
-2. Open `app/build.gradle` and change `namespace` and `applicationId`
-3. Open `app/src/main/AndroidManifest.xml` and change `package="..."`
-4. Rename the folder structure in `app/src/main/java/` to match your new package
-5. Update `fastlane/Appfile` with the new package name
+| File | What to Change |
+|------|----------------|
+| `app/src/main/res/values/strings.xml` | App name & text |
+| `app/src/main/res/layout/activity_main.xml` | UI layout |
+| `app/src/main/res/values/colors.xml` | Color scheme |
+| `app/src/main/java/.../MainActivity.kt` | App logic |
 
-### Step 3: Generate a Signing Key (The "Signature")
+### Step 3: Get Your APK
+1. After saving changes, go to **Actions** tab
+2. Click the latest workflow run
+3. Download the `app-debug-apk` artifact
+4. Install on your Android device!
 
-To publish an app or install a Release version, it must be "signed" with a digital key that only you possess.
+## 📁 Project Overview
 
-On Linux or Termux, run this command:
+```
+./
+├── app/                               # Your app code here
+│   └── src/main/
+│       ├── java/.../MainActivity.kt   # Main logic
+│       ├── res/layout/                # UI layouts
+│       └── res/values/                # Strings, colors, themes
+├── fastlane/                         # Play Store setup
+└── .github/workflows/build.yml       # Auto-compilation!
+```
+
+## 🛠️ Advanced Features
+
+### Local Development (Optional)
+If you want to fully develop locally later:
+
 ```bash
-keytool -genkey -v -keystore release-key.jks -keyalg RSA -keysize 2048 -validity 10000 -alias my-alias
+git clone your-repo-url
+./gradlew assembleDebug
 ```
 
-(Replace `my-alias` and `my-password` with your own secure values)
+*Git push will also trigger a github action to compile the apk, you don't really need local tools*
 
-- It will ask for a password. Remember it
-- It will ask for details (Name, Organization, etc.). You can fill them or skip
-- At the end, type `yes` to confirm
-- You now have a file named `release-key.jks`. **DO NOT commit this file to GitHub**
+### Play Store Ready
+Includes Fastlane configuration and all required store metadata.
 
-### Step 4: Add Secrets to GitHub
+## 🌟 Why This Template?
 
-GitHub needs permission to use your key and upload releases.
+- ✅ **Zero installation** - code in browser, get APK
+- ✅ **Instant setup** - 2 minutes from template to APK
+- ✅ **Professional foundation** - proper structure
+- ✅ **Play Store compatible** - includes all metadata
 
-1. **Encode your key to Base64**:
-   ```bash
-   base64 -w 0 release-key.jks > keystore_b64.txt
-   ```
-   (On Mac, omit the `-w 0` part)
+---
 
-2. **Go to GitHub**:
-   - Navigate to your repository **Settings > Secrets and variables > Actions**
-   - Click **New repository secret**
-   - Add these 4 Secrets:
+**Ready to start? Click "Use this template" above!** 🚀
 
-| Name | Value | Description |
-|------|-------|-------------|
-| `SIGNING_KEY_STORE_BASE64` | Copy the entire content of `keystore_b64.txt` | The Base64 string of your `release-key.jks` file |
-| `SIGNING_KEY_ALIAS` | `my-alias` | The alias name you set when running keytool |
-| `SIGNING_KEY_PASSWORD` | Your key password | The password for the specific key within the keystore |
-| `SIGNING_STORE_PASSWORD` | Your store password | The password for the entire `.jks` file |
-
-### Step 5: Build & Release!
-
-**To get a DEBUG APK (For testing):**
-1. Make a change to your code
-2. Push to the `main` branch
-3. Go to the **Actions** tab on GitHub
-4. Click the workflow run → **Download debug-apk** from Artifacts
-
-**To get a RELEASE APK (For the Public):**
-1. Create a tag with a version number (e.g., `v1.0.0`)
-   ```bash
-   git tag v1.0.0
-   git push origin v1.0.0
-   ```
-2. Go to the **Actions** tab
-3. Watch the "Android Fastlane CI" workflow run
-4. Once finished, go to the **Releases** section on the right side of your repo main page
-5. You will see **Release v1.0.0** with your signed `app-release.apk` ready to download!
-
-## 📂 Project Files Explained
-
-This structure includes all files necessary for compilation and all recommended assets for publishing to Google Play/F-Droid.
-
-```
-.
-├── .github/workflows/android.yml  # Configures GitHub Actions for CI/CD
-├── app/
-│   ├── src/main/
-│   │   ├── java/                  # Your Kotlin code lives here
-│   │   │   └── com/example/helloworld/MainActivity.kt # The main activity written in Kotlin.
-│   │   ├── res/                   # Application resources (layouts, strings, icons, styles)
-│   │   │   ├── layout/
-│   │   │   │   └── activity_main.xml       # Main screen layout
-│   │   │   ├── mipmap-anydpi-v26/
-│   │   │   │   └── ic_launcher.xml         # Adaptive icon XML definitions (MANDATORY)
-│   │   │   ├── mipmap/
-│   │   │   │   └── ic_launcher_round.xml   # Round icon XML definitions
-│   │   │   ├── values/
-│   │   │   │   ├── colors.xml              # Color definitions (MANDATORY)
-│   │   │   │   ├── strings.xml             # App name and other text strings (MANDATORY)
-│   │   │   │   └── themes.xml              # App theme definition (MANDATORY)
-│   │   │   └── drawable/
-│   │   │       └── (your_images.png/.xml)  # General image assets
-│   │   └── AndroidManifest.xml    # App settings (permissions, name, icon, activities)
-│   └── build.gradle               # Module dependencies, version codes, and configuration
-├── fastlane/
-│   ├── Fastfile                   # Scripts for automating the build process (debug/release)
-│   ├── Appfile                    # Configuration for the app's package name
-│   └── metadata/android/          # Fastlane: Metadata for Google Play/F-Droid (use 'en-US' or your language code)
-│       └── en-US/                 # Example for US English
-│           ├── full_description.txt  # Max 4000 chars
-│           ├── short_description.txt # Max 80 chars
-│           ├── title.txt             # Max 50 chars
-│           ├── changelogs/v1.0.0.txt # Release notes for a specific version
-│           └── images/
-│               ├── featureGraphic.png  # Banner/Cover image (1024x500px)
-│               ├── icon.png            # High-res icon (512x512px)
-│               ├── phoneScreenshots/   # Folder for phone screenshots (Minimum 2, Maximum 8)
-│               └── promoGraphic.png    # Promotional image (180x120px)
-├── gradlew                        # Script to run Gradle on Linux/Mac
-└── README.md                      # This file
-```
-
-## 🛠 Tech Stack
-
-- **Language**: Kotlin
-- **Min SDK**: Android 5.0 (API 21)
-- **Target SDK**: Android 14 (API 34)
-- **CI/CD**: GitHub Actions + Fastlane
