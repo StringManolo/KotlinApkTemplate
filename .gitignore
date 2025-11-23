@@ -190,3 +190,12 @@ traces/
 /docs/api/
 /docs/javadoc/
 /build/docs/
+
+# ==================================
+# Secrets
+# ==================================
+*/secrets/*
+KEYSTORE_BASE64
+KEYSTORE_PASSWORD
+KEY_ALIAS
+KEY_PASSWORD

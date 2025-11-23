@@ -20,7 +20,7 @@ Your APK compiles automatically on every code change!
 ### Step 1: Create Your Project
 - Click the **"Use this template"** button above
 - Name your new repository
-- Create it (public or private)
+- Create it
 
 ### Step 2: Customize Your App
 Edit these files directly on GitHub:
@@ -76,4 +76,20 @@ Includes Fastlane configuration and all required store metadata.
 ---
 
 **Ready to start? Click "Use this template" above!** 🚀
+
+### Sign the apk
+
+The debug.apk has no signature, so if you want to push updates (required for stores) you need to sign it.  
+
+To sign the apk you will need to install jdk (Java Development Kit) to get the command line tool.  
+  
+The script `./utils-generate-keystore` will guide you throught all the process. From installing the tool, to generate the keys and set them up on the compiling enviroment.  
+  
+After running the `./utils-generate-keystore` command, you will need to trigger the sign workflow. To do that, just go to releases and [create a new release](https://github.com/StringManolo/KotlinApkTemplate/releases/new). 
+
+*Make sure you run the command from inside the bash folder as follows*:
+```bash
+cd ./bash
+./utils-generate-keystore
+```
 
