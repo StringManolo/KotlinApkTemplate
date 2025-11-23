@@ -85,7 +85,7 @@ To sign the apk you will need to install jdk (Java Development Kit) to get the c
   
 The script `./utils-generate-keystore` will guide you throught all the process. From installing the tool, to generate the keys and set them up on the compiling enviroment.  
   
-After running the `./utils-generate-keystore` command, you will need to trigger the sign workflow. To do that, just go to releases and [create a new release](https://github.com/StringManolo/KotlinApkTemplate/releases/new). 
+After running the `./utils-generate-keystore` command, you will need to trigger the sign workflow. To do that, just go to releases and [create a new release](https://github.com/StringManolo/KotlinApkTemplate/releases/new). Don't forget to create a new tag like v.1.0.0 
 
 *Make sure you run the command from inside the bash folder as follows*:
 ```bash
