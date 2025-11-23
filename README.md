@@ -1,4 +1,4 @@
-# Hello World: Minimal Kotlin APK Template
+# Hello World: Minimal Kotin APK Template
 
 **Compile Android APKs in 2 minutes - ZERO installation required!**
 
@@ -38,58 +38,86 @@ Edit these files directly on GitHub:
 3. Download the `app-debug-apk` artifact
 4. Install on your Android device!
 
-## 📁 Project Overview
+## 📁 Project Structure - What Each File Does
 
+Here's what you need to know about the project files:
+
+### 🎨 App Resources (Edit These)
+
+**`app/src/main/res/values/strings.xml`**
+- Contains all text strings for your app
+- **Change**: App name, button texts, messages
+
+**`app/src/main/res/values/colors.xml`**
+- Defines your app's color scheme
+- **Change**: Primary color, background colors, text colors
+
+**`app/src/main/res/layout/activity_main.xml`**
+- Your app's user interface layout
+- **Change**: Add buttons, text views, images
+
+**`app/src/main/java/com/example/helloworld/MainActivity.kt`**
+- Your app's main logic
+- **Change**: Add functionality, handle button clicks
+
+### 🖼️ App Icons (Replace These)
+
+**Icon files to replace in `mipmap-*` folders:**
+- `mipmap-hdpi/ic_launcher.png` (72x72 pixels)
+- `mipmap-mdpi/ic_launcher.png` (48x48 pixels)
+- `mipmap-xhdpi/ic_launcher.png` (96x96 pixels)
+- `mipmap-xxhdpi/ic_launcher.png` (144x144 pixels)
+- `mipmap-xxxhdpi/ic_launcher.png` (192x192 pixels)
+
+**Replace all these PNG files** with your own app icon at the correct sizes.
+
+### ⚙️ Configuration Files (Usually Don't Edit)
+
+**`app/build.gradle`** - App dependencies and build settings
+**`build.gradle`** - Project-wide Gradle configuration
+**`AndroidManifest.xml`** - App permissions and components
+**`.github/workflows/build.yml`** - GitHub Actions auto-build script
+
+### 🔐 Signing Scripts (For Advanced Use)
+
+**`bash/utils-generate-keystore`** - Helps create signing keys for Play Store
+**`bash/utils-compile-apk`** - Local compilation script
+
+## 🛠️ Quick Customization Guide
+
+### Change App Name
+Edit `app/src/main/res/values/strings.xml`:
+```xml
+<string name="app_name">My Awesome App</string>
 ```
-./
-├── app/                               # Your app code here
-│   └── src/main/
-│       ├── java/.../MainActivity.kt   # Main logic
-│       ├── res/layout/                # UI layouts
-│       └── res/values/                # Strings, colors, themes
-├── fastlane/                         # Play Store setup
-└── .github/workflows/build.yml       # Auto-compilation!
+
+### Change Colors
+Edit `app/src/main/res/values/colors.xml`:
+```xml
+<color name="colorPrimary">#FF3F51B5</color>
 ```
 
-## 🛠️ Advanced Features
+### Change Layout
+Edit `app/src/main/res/layout/activity_main.xml` to add buttons, text, or images.
 
-### Local Development (Optional)
-If you want to fully develop locally later:
-
-```bash
-git clone your-repo-url
-./gradlew assembleDebug
-```
-
-*Git push will also trigger a github action to compile the apk, you don't really need local tools*
-
-### Play Store Ready
-Includes Fastlane configuration and all required store metadata.
+### Add Functionality
+Edit `app/src/main/java/com/example/helloworld/MainActivity.kt` to make your app interactive.
 
 ## 🌟 Why This Template?
 
 - ✅ **Zero installation** - code in browser, get APK
 - ✅ **Instant setup** - 2 minutes from template to APK
-- ✅ **Professional foundation** - proper structure
-- ✅ **Play Store compatible** - includes all metadata
+- ✅ **Clean structure** - easy to understand and expand
+- ✅ **Auto-compilation** - APK built on every code change
 
 ---
 
 **Ready to start? Click "Use this template" above!** 🚀
 
-### Sign the apk
-
-The debug.apk has no signature, so if you want to push updates (required for stores) you need to sign it.  
-
-To sign the apk you will need to install jdk (Java Development Kit) to get the command line tool.  
-  
-The script `./utils-generate-keystore` will guide you throught all the process. From installing the tool, to generate the keys and set them up on the compiling enviroment.  
-  
-After running the `./utils-generate-keystore` command, you will need to trigger the sign workflow. To do that, just go to releases and [create a new release](https://github.com/StringManolo/KotlinApkTemplate/releases/new). Don't forget to create a new tag like v.1.0.0 
-
-*Make sure you run the command from inside the bash folder as follows*:
+### Need Signed APK for Play Store?
+Run the signing script when you're ready to publish:
 ```bash
 cd ./bash
 ./utils-generate-keystore
 ```
-
+Then create a GitHub release to get your signed APK.

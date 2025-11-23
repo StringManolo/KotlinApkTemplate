@@ -1,4 +1,5 @@
-name: Android CI/CD Pipeline
+
+name: Android Native CI/CD
 
 on:
   push:
@@ -7,63 +8,68 @@ on:
     branches: [ "main" ]
   create:
     tags:
-      - 'v*'
+      - 'v*' 
   workflow_dispatch:
 
 jobs:
-  build_and_deploy:
+  build:
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      contents: write 
 
     steps:
-      - name: Checkout Code
+      - name: 🚀 Checkout Code
         uses: actions/checkout@v4
 
-      - name: Set up JDK 17
+      - name: ☕ Set up JDK 17
         uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
-          cache: gradle
 
-      - name: Setup Gradle
+      - name: 🐘 Setup Gradle
         uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.5'
 
-      - name: Setup Ruby and Bundler Cache
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: '3.2'
-          bundler-cache: true
+      - name: 🏗️ Build Debug APK
+        run: gradle assembleDebug --stacktrace
 
-      - name: Decode Keystore for Signing
-        if: startsWith(github.ref, 'refs/tags/')
-        env:
-          ENCODED_STRING: ${{ secrets.SIGNING_KEY_STORE_BASE64 }}
-        run: |
-          # If the secret is missing, $ENCODED_STRING will be empty. 
-          # The base64 command will fail, correctly halting the release process.
-          echo "$ENCODED_STRING" | base64 --decode > app/release-key.jks
-          
-      - name: Run Fastlane Debug Lane (Compile)
-        if: github.ref == 'refs/heads/main' || github.event_name == 'pull_request'
-        run: bundle exec fastlane deploy_debug
-
-      - name: Upload Debug APK Artifact
-        if: github.ref == 'refs/heads/main' || github.event_name == 'pull_request'
+      - name: 📦 Upload Debug APK Artifact
         uses: actions/upload-artifact@v4
         with:
           name: debug-apk
           path: app/build/outputs/apk/debug/app-debug.apk
           retention-days: 7
-          
-      - name: Run Fastlane Release Lane (Deploy to GitHub)
+
+      - name: 🔐 Config APK Signature
         if: startsWith(github.ref, 'refs/tags/')
-        run: bundle exec fastlane deploy_release version:${{ github.ref_name }}
         env:
-          KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
-          KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
-          STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
+          KEYSTORE_BASE64: ${{ secrets.SIGNING_KEY_STORE_BASE64 }}
+        run: |
+          KEYSTORE_PATH=$RUNNER_TEMP/release.jks
+          echo "$KEYSTORE_BASE64" | base64 -d > $KEYSTORE_PATH
+          echo "RELEASE_STORE_FILE=$KEYSTORE_PATH" >> $GITHUB_ENV
+          echo "RELEASE_STORE_PASSWORD=${{ secrets.SIGNING_STORE_PASSWORD }}" >> $GITHUB_ENV
+          echo "RELEASE_KEY_ALIAS=${{ secrets.SIGNING_KEY_ALIAS }}" >> $GITHUB_ENV
+          echo "RELEASE_KEY_PASSWORD=${{ secrets.SIGNING_KEY_PASSWORD }}" >> $GITHUB_ENV
+
+      - name: 🎯 Build Release APK
+        if: startsWith(github.ref, 'refs/tags/')
+        run: gradle assembleRelease --stacktrace
+
+      - name: 📦 Upload Release APK Artifact
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-apk
+          path: app/build/outputs/apk/release/app-release.apk
+          retention-days: 30
+
+      - name: 🚀 Attach APK to Release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v1
+        with:
+          files: app/build/outputs/apk/release/app-release.apk
+        env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
