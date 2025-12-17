@@ -2,6 +2,9 @@
 
 **Compile Android APKs in 2 minutes - ZERO installation required!**
 
+![kotlinapktemplate_screenshot](https://github.com/user-attachments/assets/4c8cf552-da53-46a3-85a1-0be9b1c02577)
+
+
 > **Just click "Use this template" and start coding - no Android Studio, no SDK, no JDK needed!**
 
 ## 🚀 How It Works
